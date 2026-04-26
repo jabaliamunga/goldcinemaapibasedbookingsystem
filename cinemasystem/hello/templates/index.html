@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Cinema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animated Cinematic Gradient Background */
+    body {
+      background: linear-gradient(135deg, #000000, #1a1a1a, #3b2f2f, #a67c00);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+    }
+
+    /* Blinking Gold Cinema Title + Background */
+    @keyframes neonBlink {
+      0%, 100% {
+        color: #FFD700; /* Gold */
+        background: rgba(255, 215, 0, 0.1);
+        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 0 0 40px #FF4500;
+      }
+      25% {
+        color: #ffffff; /* White flash */
+        background: rgba(255, 255, 255, 0.2);
+        text-shadow: 0 0 15px #ffffff, 0 0 30px #FFD700, 0 0 60px #FFA500;
+      }
+      50% {
+        color: #FFA500; /* Orange glow */
+        background: rgba(255, 165, 0, 0.15);
+        text-shadow: 0 0 20px #FFA500, 0 0 40px #FFD700, 0 0 70px #FF8C00;
+      }
+      75% {
+        color: #FFD700; /* Back to gold */
+        background: rgba(255, 215, 0, 0.25);
+        text-shadow: 0 0 25px #FFD700, 0 0 50px #FFA500, 0 0 80px #FF4500;
+      }
+    }
+
+    .blinking-title {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      animation: neonBlink 2s infinite;
+    }
+  </style>
+</head>
+ 
+<body class="text-gray-100">
+  {% if messages %}
+  <div class="fixed top-4 right-4 space-y-2 z-50">
+    {% for msg in messages %}
+      <div class="px-4 py-3 rounded-lg shadow-lg 
+                  {% if msg.tags == 'success' %} bg-green-600/90 text-white 
+                  {% elif msg.tags == 'error' %} bg-red-600/90 text-white 
+                  {% else %} bg-yellow-500/90 text-black {% endif %}">
+        {{ msg }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+<div class="overlay">
+  <!-- Header -->
+  <header class="bg-yellow-600/90 text-white p-6 text-center shadow-lg">
+    <h1 class="text-4xl blinking-title">🎬 Gold Cinema</h1>
+    <p class="mt-2">Experience Movies, Concerts & Plays Like Never Before</p>
+  </header>
+
+
+  <!-- About Section -->
+  <section class="p-8 text-center">
+    <h2 class="text-3xl font-semibold mb-4">About Us</h2>
+    <p class="max-w-2xl mx-auto">
+      Gold Cinema has been a premier destination for entertainment since 1998. 
+      From blockbuster movies to unforgettable concerts and timeless plays, 
+      we bring the world of art and culture to your city.
+    </p>
+  </section>
+
+  <!-- Gallery -->
+  <section class="p-8 bg-gray-900/60 rounded-xl mx-4">
+    <h2 class="text-3xl font-semibold mb-6 text-center text-yellow-400">Our Events</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+      <!-- Movie -->
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=800&q=60" 
+             alt="Movie" class="rounded-2xl shadow-lg w-full h-64 object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 rounded-2xl flex flex-col items-center justify-center text-white">
+          <h3 class="text-xl font-bold">Movies</h3>
+          <p class="text-sm">Latest blockbusters on the big screen</p>
+        </div>
+      </div>
+
+      <!-- Concert -->
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=60" 
+             alt="Concert" class="rounded-2xl shadow-lg w-full h-64 object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 rounded-2xl flex flex-col items-center justify-center text-white">
+          <h3 class="text-xl font-bold">Concerts</h3>
+          <p class="text-sm">Live performances from top artists</p>
+        </div>
+      </div>
+
+      <!-- Play -->
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?auto=format&fit=crop&w=800&q=60" 
+             alt="Play" class="rounded-2xl shadow-lg w-full h-64 object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 rounded-2xl flex flex-col items-center justify-center text-white">
+          <h3 class="text-xl font-bold">Plays</h3>
+          <p class="text-sm">Timeless theatre and stage shows</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Location & Button BELOW images -->
+    <div class="mt-10 text-center">
+      <p class="mb-3 font-semibold text-lg text-white">📍 Location: Nairobi, Kenya</p>
+      <button onclick="openSignup()" 
+              class="bg-yellow-600 text-white px-6 py-2 rounded-lg shadow hover:bg-yellow-700">
+        Create Account
+      </button>
+    </div>
+  </section>
+</div>
+
+  <!-- Signup Popup -->
+  <div id="signupPopup" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white/30 backdrop-blur-lg border border-white/20 p-6 rounded-2xl shadow-2xl w-96 text-white">
+      <h2 class="text-2xl font-bold mb-4 text-center">Create Account</h2>
+      <form method="POST" action="http://127.0.0.1:8000/api/register_customer/">
+        {% csrf_token %}
+       
+        <input type="text" name="first_name" placeholder="First Name" class="w-full p-2 border rounded mb-2 bg-white/20 placeholder-white text-white" required>
+        <input type="text" name="last_name" placeholder="Last Name" class="w-full p-2 border rounded mb-2 bg-white/20 placeholder-white text-white" required>
+        <input type="email" name="email" placeholder="Email" class="w-full p-2 border rounded mb-2 bg-white/20 placeholder-white text-white" required>
+        <input type="text" name="phone" placeholder="Phone" class="w-full p-2 border rounded mb-2 bg-white/20 placeholder-white text-white" required>
+        <input type="text" name="address" placeholder="Address" class="w-full p-2 border rounded mb-2 bg-white/20 placeholder-white text-white" required>
+        <input type="password" name="password" placeholder="Password"
+                        class="w-full p-2 border rounded mb-4 bg-white/20 placeholder-white text-white"
+                         autocomplete="new-password" required>
+
+        <button type="submit" class="bg-yellow-600 text-white px-4 py-2 rounded-lg w-full hover:bg-yellow-700">Sign Up</button>
+      </form>
+      <p class="mt-2 text-sm text-center">Already have an account? 
+        <a href="#" class="text-yellow-300 font-semibold" onclick="openLogin()">Login</a>
+      </p>
+      <button onclick="closePopup()" class="mt-4 w-full bg-gray-300/30 text-white py-2 rounded-lg">Close</button>
+    </div>
+  </div>
+
+  <!-- Login Popup -->
+  <div id="loginPopup" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white/30 backdrop-blur-lg border border-white/20 p-6 rounded-2xl shadow-2xl w-80 text-white">
+      <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+      <form method="POST" action="http://127.0.0.1:8000/login/">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Email" class="w-full p-2 border rounded mb-2 bg-white/20 placeholder-white text-white" autocomplete="off"  required>
+        <input type="password" name="password" placeholder="Password" class="w-full p-2 border rounded mb-4 bg-white/20 placeholder-white text-white" autocomplete="new-password" required>
+        <button type="submit" class="bg-yellow-600 text-white px-4 py-2 rounded-lg w-full hover:bg-yellow-700">Login</button>
+      </form>
+      <button onclick="closePopup()" class="mt-4 w-full bg-gray-300/30 text-white py-2 rounded-lg">Close</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-black/70 text-gray-300 py-6 mt-10">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+      <!-- Left -->
+      <p class="text-sm">&copy; 2025 Gold Cinema. All Rights Reserved.</p>
+
+      <!-- Middle -->
+      <div class="my-3 md:my-0 text-sm">
+        <p>📍 Kisii, Kenya | ☎ +254 112770449</p>
+      </div>
+
+     
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function openSignup() {
+      document.getElementById("signupPopup").classList.remove("hidden");
+      document.getElementById("loginPopup").classList.add("hidden");
+    }
+    function openLogin() {
+      document.getElementById("signupPopup").classList.add("hidden");
+      document.getElementById("loginPopup").classList.remove("hidden");
+    }
+    function closePopup() {
+      document.getElementById("signupPopup").classList.add("hidden");
+      document.getElementById("loginPopup").classList.add("hidden");
+    }
+     setTimeout(() => {
+    document.querySelectorAll('.fixed.top-4.right-4 div')
+      .forEach(el => el.style.display = 'none');
+     }, 10000); // hides after 4 seconds
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Your Ticket</title>
+
+    <style>
+        body {
+            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .ticket-wrapper {
+            max-width: 480px;
+            margin: auto;
+            background: #fffbea;
+            border: 2px dashed #b8860b;
+            border-radius: 12px;
+            padding: 20px;
+            color: #333;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            color: #b8860b;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .detail {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logo img {
+            width: 80px;
+        }
+
+        .barcode {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .barcode img {
+            width: 150px;
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="ticket-wrapper">
+
+    <div class="title">🎟 Gold Cinema — Ticket</div>
+
+    <p class="detail"><strong>Movie:</strong> {{ production_name }}</p>
+    <p class="detail"><strong>Category:</strong> {{ production_type }}</p>
+    <p class="detail"><strong>Seat Number:</strong> {{ seat_preference }}</p>
+
+    <div class="footer">
+        Enjoy your movie! 🍿 <br>
+        Gold Cinema Company
+    </div>
+
+</div>
+
+</body>
+</html>

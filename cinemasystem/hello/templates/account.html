@@ -1,0 +1,219 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GoldCinema-Booking Company</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root{--gold:#d4af37}
+      body{background:linear-gradient(180deg,#080808 0%, #0f0f10 40%);}
+      .glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(6px);}
+      .card-hover:hover{transform:translateY(-6px) scale(1.01);} 
+      .card-hover{transition:all 220ms cubic-bezier(.2,.9,.2,1);} 
+    </style>
+  </head>
+  <body class="min-h-screen text-white antialiased">
+     {% if messages %}
+  <div class="fixed top-4 right-4 space-y-2 z-50">
+    {% for msg in messages %}
+      <div class="px-4 py-3 rounded-lg shadow-lg 
+                  {% if msg.tags == 'success' %} bg-green-600/90 text-white 
+                  {% elif msg.tags == 'error' %} bg-red-600/90 text-white 
+                  {% else %} bg-yellow-500/90 text-black {% endif %}">
+        {{ msg }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40">
+      <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between glass rounded-b-2xl shadow-lg">
+        <a href="#home" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 to-orange-400 flex items-center justify-center text-black font-bold">GC</div>
+          <div>
+            <div class="text-lg font-semibold">Gold Cinema</div>
+            <div class="text-xs text-gray-300">Live • Plays • Concerts</div>
+          </div>
+        </a>
+
+        <ul class="hidden md:flex gap-6 items-center text-sm">
+          <li><a href="#movies" class="hover:text-yellow-400">Movies</a></li>
+          <li><a href="#plays" class="hover:text-yellow-400">Plays</a></li>
+          <li><a href="#concerts" class="hover:text-yellow-400">Concerts</a></li>
+        </ul>
+
+        <div class="flex items-center gap-3">
+          <a href="#book" class="px-4 py-2 rounded-full bg-yellow-400 text-black font-medium hover:brightness-95">Book Now</a>
+          <button class="md:hidden p-2 rounded-md glass">☰</button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section id="home" class="max-w-6xl mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-2">
+          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Experience the best shows in town — <span class="text-yellow-400">book your seat</span> at Gold Cinema</h1>
+          <p class="mt-4 text-gray-300 max-w-xl">Movies • Plays • Concerts — comfortable seating, premium sound and lights. Browse current shows below and click "Book Now" on any show to reserve your seat.</p>
+
+          <div class="mt-6 flex gap-3">
+            <a href="#movies" class="px-4 py-2 rounded-md glass border border-gray-700">Browse Movies</a>
+            <a href="#book" class="px-4 py-2 rounded-md bg-yellow-400 text-black">Quick Book</a>
+          </div>
+        </div>
+
+        <div class="hidden md:flex justify-end">
+          <div class="w-64 h-40 rounded-2xl overflow-hidden shadow-2xl card-hover">
+            <img src="https://picsum.photos/400/250?random=1" alt="cinema" class="w-full h-full object-cover" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto px-4 pb-20">
+      <!-- Movies -->
+      <section id="movies" class="mt-8">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold">Movies</h2>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for p in movies %}
+          <article class="bg-gradient-to-b from-white/3 to-black/20 rounded-2xl overflow-hidden shadow-xl card-hover">
+            <div class="relative">
+              <img src="https://picsum.photos/400/250?random={{ forloop.counter }}" alt="Movie Poster" class="w-full h-56 object-cover" loading="lazy" >
+              <div class="absolute left-3 top-3 px-2 py-1 rounded-md text-xs font-semibold bg-black/60">PG-13</div>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg">{{ p.production_name }}</h3>
+              <p class="text-xs text-gray-400 mt-1">Show Date: {{ p.start_date }}</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-sm text-gray-300">{{p.description}}</div>
+                <a href="#book" class="px-3 py-2 rounded-lg bg-yellow-400 text-black text-sm font-medium">Book Now</a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Plays -->
+      <section id="plays" class="mt-12">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold">Plays</h2>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for p in plays %}
+          <article class="bg-gradient-to-b from-white/3 to-black/20 rounded-2xl overflow-hidden shadow-xl card-hover">
+            <img src="https://picsum.photos/400/250?random={{ forloop.counter|add:10 }}" alt="Play" class="w-full h-56 object-cover" loading="lazy">
+            <div class="p-4">
+              <h3 class="font-semibold text-lg">{{ p.production_name }}</h3>
+              <p class="text-xs text-gray-400 mt-1">Show Date: {{ p.start_date }}</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-sm text-gray-300">{{p.description}}</div>
+                <a href="#book" class="px-3 py-2 rounded-lg bg-yellow-400 text-black text-sm font-medium">Book Now</a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Concerts -->
+      <section id="concerts" class="mt-12">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold">Concerts</h2>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for p in concerts %}
+          <article class="bg-gradient-to-b from-white/3 to-black/20 rounded-2xl overflow-hidden shadow-xl card-hover">
+            <img src="https://picsum.photos/400/250?random={{ forloop.counter|add:20 }}" alt="Concert" class="w-full h-56 object-cover" loading="lazy">
+            <div class="p-4">
+              <h3 class="font-semibold text-lg">{{ p.production_name }}</h3>
+              <p class="text-xs text-gray-400 mt-1">Show Date: {{ p.start_date }}</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-sm text-gray-300">{{p.description}}</div>
+                <a href="#book" class="px-3 py-2 rounded-lg bg-yellow-400 text-black text-sm font-medium">Book Now</a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Quick Book -->
+<section id="book" class="mt-16 bg-white/3 glass rounded-2xl p-6">
+  <h2 class="text-xl font-semibold text-white">Quick Book</h2>
+  <p class="text-sm text-gray-300 mt-1">
+    Movie:300, Concert:600 , Play:400 — payments are done before the actual show. WELCOME!
+  </p>
+
+  <!-- 🟡 Added "Check Available Seats" link -->
+  <div class="mt-3 mb-4 flex justify-end">
+    <a href="/test/" 
+       class="px-4 py-2 rounded-lg bg-yellow-400 text-black font-medium hover:brightness-90 transition">
+       🎟️ Check Available Seats before booking
+    </a>
+  </div>
+
+  <form action="/booking/" method="POST" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% csrf_token %}
+    <input type="email" name="email" placeholder="Your account email" required 
+           class="p-3 rounded-lg bg-transparent border border-gray-700" />
+
+    <select name="production_type" required class="p-3 rounded-lg bg-transparent border border-gray-700">
+      <option value="">production_type(Movie,Concert,Play)</option>
+      <option value="Movie">Movie</option>
+      <option value="Concert">Concert</option>
+      <option value="Play">Play</option>
+    </select>
+
+    <input name="production_name" placeholder="Production Name (e.g., Midnight Echo)" required 
+           class="p-3 rounded-lg bg-transparent border border-gray-700" />
+
+    <input type="text" name="seat_preference" placeholder="Enter seat number between 1 to 300" required 
+           class="p-3 rounded-lg bg-transparent border border-gray-700 md:col-span-2">
+
+    <input name="advisor" placeholder="Advisor (optional)" 
+           class="p-3 rounded-lg bg-transparent border border-gray-700 md:col-span-2" />
+
+    <button type="submit" 
+            class="md:col-span-1 px-4 py-3 rounded-lg bg-yellow-400 text-black font-semibold hover:brightness-95 transition">
+      Reserve Seat
+    </button>
+  </form>
+
+  <p class="mt-3 text-xs text-gray-400">
+    Note: make sure the production_name aligns with the production type
+  </p>
+</section>
+
+ 
+
+
+      <!-- Footer -->
+      <footer id="about" class="mt-12 text-sm text-gray-400">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <p>&copy; 2025 My Movie Shop</p>
+          <div> 
+            <div class="font-semibold text-white">Gold Cinema</div>
+            <div class="text-xs mt-1">123 Theatre Lane • Nairobi</div>
+          </div>
+        </div>
+        
+      </footer>
+    </main>
+
+    <script>
+      setTimeout(() => {
+        document.querySelectorAll('.fixed.top-4.right-4 div')
+          .forEach(el => el.style.display = 'none');
+      }, 10000);
+    </script>
+  </body>
+</html>
