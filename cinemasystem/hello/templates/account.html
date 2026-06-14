@@ -161,26 +161,14 @@
     </a>
   </div>
 
-  <form action="/booking/" method="POST" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <form action="/booking_api_consumption/" method="POST" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
     {% csrf_token %}
-    <input type="email" name="email" placeholder="Your account email" required 
-           class="p-3 rounded-lg bg-transparent border border-gray-700" />
-
-    <select name="production_type" required class="p-3 rounded-lg bg-transparent border border-gray-700">
-      <option value="">production_type(Movie,Concert,Play)</option>
-      <option value="Movie">Movie</option>
-      <option value="Concert">Concert</option>
-      <option value="Play">Play</option>
-    </select>
 
     <input name="production_name" placeholder="Production Name (e.g., Midnight Echo)" required 
            class="p-3 rounded-lg bg-transparent border border-gray-700" />
 
     <input type="text" name="seat_preference" placeholder="Enter seat number between 1 to 300" required 
            class="p-3 rounded-lg bg-transparent border border-gray-700 md:col-span-2">
-
-    <input name="advisor" placeholder="Advisor (optional)" 
-           class="p-3 rounded-lg bg-transparent border border-gray-700 md:col-span-2" />
 
     <button type="submit" 
             class="md:col-span-1 px-4 py-3 rounded-lg bg-yellow-400 text-black font-semibold hover:brightness-95 transition">

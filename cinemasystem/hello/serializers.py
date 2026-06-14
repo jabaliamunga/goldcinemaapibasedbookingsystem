@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import Production, Booking, Customer
+from django.contrib.auth.hashers import make_password, check_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 class ProductionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,19 +10,43 @@ class ProductionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+
 class BookingSerializer(serializers.ModelSerializer):
+#for get ie get id s and names based on the foreign key
+    customer_email = serializers.EmailField(
+        source='customer.email',
+        read_only=True
+    )
+
     production_name = serializers.CharField(
         source='production.production_name',
         read_only=True
-    ) #production_name not in the booking model but has also been included 
-    customer_email = serializers.CharField(
-        source='customer.email',
-        read_only=True
-    ) #not in the bbooking model but also included
+    )
+#for post request
+    customer = serializers.SlugRelatedField(
+        slug_field='email',
+        queryset=Customer.objects.all(),
+        write_only=True
+    )
+
+    production = serializers.SlugRelatedField(
+        slug_field='production_name',
+        queryset=Production.objects.all(),
+        write_only=True
+    )
 
     class Meta:
         model = Booking
-        fields = '__all__'   
+        fields = [
+            'id',
+            'customer',
+            'production',
+            'customer_email',
+            'production_name',
+            'seat_preference',
+            'booked_at'
+        ]
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -28,7 +55,25 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'address', 'password']
-        #password will be included in the api but hashed
+
+    # 🔥 THIS IS THE FIX (VERY IMPORTANT)
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+
+        customer = Customer.objects.create(
+            **validated_data
+        )
+
+        # ✅ correct way
+        customer.set_password(password)
+        customer.save()
+        return customer
+    
+#for our jwt auth to use email for login
+
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'    
 #serialisers convert models to json and json back to python objects
 
 

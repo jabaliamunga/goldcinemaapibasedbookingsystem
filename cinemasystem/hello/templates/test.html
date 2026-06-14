@@ -150,7 +150,7 @@
         <br><br>
         <select name="production_name" id="production_name" required>
             {% for x in production %}
-                <option value="{{ x.production_name }}">{{ x.production_name }}</option>
+                <option value="{{ x.id }}">{{ x.production_name }}</option>
             {% endfor %}
         </select>
         <button type="submit">Check</button>
@@ -179,7 +179,7 @@
         <h3 style="text-align:center; color:red;">No production found or no bookings yet.</h3>
     {% endif %}
 
-    <a href="/index/">Book now</a>
+    <a href="/productions_page/">Book now</a>
 
     <script>
         function toggleSeats() {

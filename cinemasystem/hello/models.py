@@ -1,5 +1,44 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+class CustomerManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("Email is required")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(email, password, **extra_fields)
+
+
+class Customer(AbstractUser):
+    username = None  # remove username since we login with email
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    customer_code = models.BigIntegerField(unique=True, editable=False, blank=True, null=True)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15, blank=True)
+    address = models.CharField(max_length=100, blank=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    objects = CustomerManager()  # ✅ required when USERNAME_FIELD = "email"
+
+    def save(self, *args, **kwargs):
+        if not self.customer_code:
+            last_customer = Customer.objects.order_by('-customer_code').first()
+            self.customer_code = (last_customer.customer_code + 1) if last_customer else 45601
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.customer_code} - {self.first_name} {self.last_name}"
 
 class Production(models.Model):
     PRODUCTION_TYPES = [
@@ -17,32 +56,7 @@ class Production(models.Model):
     def __str__(self):
         return f"{self.production_name} ({self.get_production_type_display()}) {self.start_date}"
     
-from django.db import models
 
-class Customer(models.Model):
-    customer_code = models.BigIntegerField(unique=True, editable=False)
-
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15)
-    address = models.CharField(max_length=100)
-    password = models.CharField(max_length=128)
-
-    def save(self, *args, **kwargs):
-        # If new customer, generate code
-        if not self.customer_code:
-            last_customer = Customer.objects.order_by('-customer_code').first()
-
-            if last_customer:
-                self.customer_code = last_customer.customer_code + 1
-            else:
-                self.customer_code = 45601  # starting point
-
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.customer_code} - {self.first_name} {self.last_name}"
 
 
 class Booking(models.Model):
