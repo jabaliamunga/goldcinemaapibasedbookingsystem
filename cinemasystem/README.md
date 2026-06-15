@@ -33,7 +33,7 @@ A full-stack cinema booking web application built with **Django REST Framework**
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/goldcinema.git
+git clone https://github.com/jabaliamunga/goldcinema.git
 cd goldcinema
 ```
 
@@ -71,6 +71,38 @@ DEFAULT_FROM_EMAIL=Gold Cinema <your@gmail.com>
 ```sql
 CREATE DATABASE your_db_name;
 ```
+
+### CONFIGURE DATABASE
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
+    }
+}
+
+### INSTALLED APPS
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'rest_framework',
+    'hello',         
+]
 
 ### 6. Run migrations
 
@@ -113,7 +145,8 @@ goldcinema/
 │   └── templates/
 │       ├── index.html      # Landing + login + register
 │       ├── account.html    # Booking page
-│       └── test.html       # Seat map page
+│       └── test.html       ## Seat map page
+|       |__ email.html        
 ├── manage.py
 ├── requirements.txt
 └── README.md
