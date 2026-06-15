@@ -86,6 +86,26 @@ def booking(request):
         production=production,
         seat_preference=seat
     )
+    # ✅ Send HTML ticket email
+    from django.core.mail import EmailMultiAlternatives
+    from django.template.loader import render_to_string
+
+    html_content = render_to_string("email.html", {
+                "production_name": production_name,
+                 "seat_preference": seat,
+                
+        })
+
+    email = EmailMultiAlternatives(
+    subject="Booking Confirmation - Gold Cinema Company",
+    body="Your ticket is ready. Click the button in the email to download.",
+    from_email="Gold Cinema <jabaliamunga@gmail.com>",
+    to=[request.user.email],
+        )
+
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+    
 
     return Response({
         "message": "Booking successful",
