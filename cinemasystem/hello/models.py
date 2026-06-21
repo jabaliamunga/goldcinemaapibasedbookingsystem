@@ -82,6 +82,8 @@ class Booking(models.Model):
             self.amount = 0
 
         super().save(*args, **kwargs)
+        class Meta:
+            unique_together = ['production', 'seat_preference']
 
     def __str__(self):
         return f"Booking for {self.customer.email} ({self.production.production_name}) - {self.amount} KES"
